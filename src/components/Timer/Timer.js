@@ -34,9 +34,15 @@ class Timer extends Component {
   tick() {
     // This function is called every 1000 ms. It updates the 
     // elapsed counter. Calling setState causes the component to be re-rendered
-    if (this.props.isCounting) {
-      this.setState({timeLeft: this.state.timeLeft - 1000});
+    if (this.state.timeLeft < 1000) {
+      this.setState({timeLeft: this.props.start})
+      clearInterval(this.timer);
+      this.props.resetAudioPlayer()
+      return;
     }
+    if (this.props.isCounting && (this.state.timeLeft > 1000)) {
+      this.setState({timeLeft: this.state.timeLeft - 1000});
+    } 
   }
 
   render() {

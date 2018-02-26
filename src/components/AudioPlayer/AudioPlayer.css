@@ -1,0 +1,33 @@
+.AudioPlayer__container {
+  position: sticky;
+  top: 0;
+  z-index: 500;
+}
+
+.AudioPlayer__tool-bar {
+  z-index: 0;
+  flex-flow: column;
+}
+
+.AudioPlayer__tool-bar h3 {
+  color: #000;
+  margin: 0 0 15px 0;
+}
+
+.AudioPlayer__fab {
+  position: absolute;
+  right: 20px;
+  margin-top: -25px;
+  z-index: 1200;
+}
+
+/****************** Media Query *****************/ 
+
+@media screen and (min-device-width: 480px) {
+  .AudioPlayer__tool-bar {
+    padding-left: 75px !important;
+  }
+  .AudioPlayer__fab {
+    right: 43px;
+  }
+}

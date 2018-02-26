@@ -1,0 +1,68 @@
+.SongsList__flex-container {
+  display: flex;
+  flex-flow: wrap;
+  width: 100%;
+  margin: 0 auto;
+  animation-name: fade-up;
+  animation-duration: .5s;
+  animation-timing-function: ease-in;
+  animation-fill-mode: forwards;
+}
+
+.SongsList__song-item-container {
+  display: flex;
+  width: 400px;
+  margin: 8px 8px 10px 8px;
+  background: #f9f9f9;
+  overflow: hidden;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px,
+              rgba(0, 0, 0, 0.12) 0px 1px 4px;
+  border-radius: 5px;
+  transition: box-shadow .1s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.SongsList__song-item-container:hover {
+  cursor: pointer;
+  box-shadow: rgba(32, 33, 36, 0.28) 0 2px 15px;
+}
+
+.SongsList__song-item-img {
+  width: 160px;
+  height: 160px;
+}
+
+.SongsList__song-item-info {
+  margin: 10px;
+  width: 175px;
+}
+
+.SongsList__song-item-info h3 {
+  margin-top: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/****************** FADE-UP ANIMATION ***********/
+
+@keyframes fade-up {
+  0% {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+
+/****************** Media Query *****************/ 
+
+@media screen and (min-device-width: 480px) {
+  .SongsList__flex-container {
+    width: 832px;
+  }
+  .SongsList__song-item-info {
+    width: 220px;
+  }
+}

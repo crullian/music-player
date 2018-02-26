@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import moment from 'moment';
 import Timer from '../../components/Timer/Timer';
 import AppBar from 'material-ui/AppBar';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
@@ -25,6 +24,11 @@ class AudioPlayer extends Component {
   }
 
   togglePlay() {
+    if (this.state.isPlaying) {
+      this.player.pause()
+    } else {
+      this.player.play();
+    }
     this.setState({
       isPlaying: !this.state.isPlaying
     })
@@ -33,7 +37,6 @@ class AudioPlayer extends Component {
   render() {
     const {isPlaying} = this.state;
     const {trackToPlay} = this.props;
-    console.log('TRACK TO PLAY', trackToPlay && trackToPlay.trackName && trackToPlay.trackTimeMillis);
   
     return (
       <div className='AudioPlayer__container'>
@@ -46,17 +49,15 @@ class AudioPlayer extends Component {
             ? <Timer start={trackToPlay.trackTimeMillis} isCounting={isPlaying}/>
             : <h3>--:--</h3>
           }
+          {trackToPlay && 
+            <audio ref={player => this.player = player} src={trackToPlay.previewUrl} />
+          }
         </AppBar>
         
         <FloatingActionButton secondary={true} className='AudioPlayer__fab'>
-         {isPlaying
-          ? <FontIcon className="material-icons" onClick={this.togglePlay}>
-              pause
-            </FontIcon>
-          : <FontIcon className="material-icons" onClick={this.togglePlay}>
-              play_arrow
-            </FontIcon>
-         }
+          <FontIcon className="material-icons" onClick={this.togglePlay}>
+            {isPlaying ? 'pause' : 'play_arrow'}
+          </FontIcon>
         </FloatingActionButton>
       </div>
     )

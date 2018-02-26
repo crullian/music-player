@@ -1,0 +1,57 @@
+.SongItem-container {
+  display: flex;
+  width: 400px;
+  margin: 8px 8px 10px 8px;
+  background: #f9f9f9;
+  overflow: hidden;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px,
+              rgba(0, 0, 0, 0.12) 0px 1px 4px;
+  border-radius: 5px;
+  transition: box-shadow .1s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.SongItem-container:hover {
+  cursor: pointer;
+  background: #d0d0d0;
+  box-shadow: rgba(32, 33, 36, 0.28) 0 2px 15px;
+}
+
+.SongItem-container.selected {
+  background: #d0d0d0;
+  box-shadow: rgba(32, 33, 36, 0.28) 0 10px 15px;
+}
+
+.SongItem-img {
+  width: 160px;
+  height: 160px;
+}
+
+.SongItem-info {
+  display: flex;
+  flex-flow: column;
+  margin: 10px;
+  width: 175px;
+}
+
+.SongItem-info h3 {
+  margin-top: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.SongItem-info p {
+  margin: 0 0 10px 0;
+}
+
+.SongItem-info-em {
+  margin-top: auto;
+}
+
+/****************** Media Query *****************/ 
+
+@media screen and (min-device-width: 480px) {
+  .SongItem-info {
+    width: 220px;
+  }
+}

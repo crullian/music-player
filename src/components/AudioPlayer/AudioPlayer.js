@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+
 import Timer from '../../components/Timer/Timer';
+
 import AppBar from 'material-ui/AppBar';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import FontIcon from 'material-ui/FontIcon';
@@ -37,21 +39,44 @@ class AudioPlayer extends Component {
   render() {
     const {isPlaying} = this.state;
     const {trackToPlay} = this.props;
+
+    let trackTime = <h3>--:--</h3>;
+    let audio = null;
+    if (trackToPlay) {
+      trackTime = (
+        <Timer
+          start={trackToPlay.trackTimeMillis}
+          isCounting={isPlaying}
+          resetAudioPlayer={this.togglePlay}
+        />
+      );
+      audio = (
+        <audio
+          ref={player => this.player = player}
+          src={trackToPlay.previewUrl}
+        />
+      );
+    }
   
     return (
       <div className='AudioPlayer__container'>
         <AppBar
-          title={(trackToPlay && trackToPlay.trackName) || 'Select a track'}
-          showMenuIconButton={false}
+          style={{padding: '0px'}}
+          titleStyle={{display: 'none'}}
+          iconStyleLeft={{margin: '4px 4px 0px'}}
+          iconElementLeft={trackToPlay && 
+            <img src={trackToPlay.artwork} alt='track artwork' />
+          }
+          showMenuIconButton={!!trackToPlay}
           className='AudioPlayer__tool-bar'
         >
-          {trackToPlay
-            ? <Timer start={trackToPlay.trackTimeMillis} isCounting={isPlaying}/>
-            : <h3>--:--</h3>
-          }
-          {trackToPlay && 
-            <audio ref={player => this.player = player} src={trackToPlay.previewUrl} />
-          }
+          <div className='AudioPlayer__info'>
+            <h2>
+              {(trackToPlay && trackToPlay.trackName) || 'Select a track'}
+            </h2>
+            { trackTime }
+            { audio }
+          </div>
         </AppBar>
         
         <FloatingActionButton secondary={true} className='AudioPlayer__fab'>

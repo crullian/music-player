@@ -6,12 +6,24 @@
 
 .AudioPlayer__tool-bar {
   z-index: 0;
-  flex-flow: column;
 }
 
 .AudioPlayer__tool-bar h3 {
   color: #000;
   margin: 0 0 15px 0;
+}
+
+.AudioPlayer__info {
+  margin-left: 10px;
+  width: 64%;
+}
+
+.AudioPlayer__info h2 {
+  margin-top: 15px;
+  color: #000;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .AudioPlayer__fab {

@@ -5,7 +5,8 @@ class Timer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      timeLeft: null
+      timeLeft: null,
+      done: false
     };
     this.timer = null;
     this.tick = this.tick.bind(this);
@@ -27,7 +28,11 @@ class Timer extends Component {
   componentWillReceiveProps(newProps) {
     if (newProps.start !== this.props.start) {
       this.setState({timeLeft: newProps.start})
-      // this.timer = setInterval(this.tick, 1000);
+    } else {
+      if (newProps.isCounting && this.state.done) {
+        this.setState({done: false});
+        this.timer = setInterval(this.tick, 1000);
+      }
     }
   }
 
@@ -35,7 +40,7 @@ class Timer extends Component {
     // This function is called every 1000 ms. It updates the 
     // elapsed counter. Calling setState causes the component to be re-rendered
     if (this.state.timeLeft < 1000) {
-      this.setState({timeLeft: this.props.start})
+      this.setState({timeLeft: this.props.start, done: true})
       clearInterval(this.timer);
       this.props.resetAudioPlayer()
       return;

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
-import Timer from '../../components/Timer/Timer';
+// import Timer from '../../components/Timer/Timer';
+import TimeRemaining from '../../components/TimeRemaining';
 
 import AppBar from 'material-ui/AppBar';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
@@ -12,9 +13,12 @@ class AudioPlayer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isPlaying: false
+      isPlaying: false,
+      currentTime: null,
+      duration: null
     }
     this.togglePlay = this.togglePlay.bind(this);
+    this.handleTimeUptate = this.handleTimeUptate.bind(this);
   }
 
   componentWillReceiveProps(newProps) {
@@ -23,6 +27,29 @@ class AudioPlayer extends Component {
         isPlaying: false
       })
     }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.trackToPlay) {
+      const audio = document.getElementById('audioPlayer');
+      audio.addEventListener('loadedmetadata', () => {
+        this.setState({
+          duration: audio.duration,
+          currentTime: audio.duration * 1000
+        });
+      }, false);
+    }
+  }
+
+  handleTimeUptate() {
+    if (this.state.currentTime < 1000) {
+      console.log('Getting here', this.state.duration * 1000)
+      this.setState({currentTime: this.state.duration * 1000}) // its not resetting the time
+      this.togglePlay();
+    }
+    this.setState({
+      currentTime: Math.floor(this.state.duration - this.player.currentTime) * 1000
+    })
   }
 
   togglePlay() {
@@ -39,24 +66,29 @@ class AudioPlayer extends Component {
   render() {
     const {isPlaying} = this.state;
     const {trackToPlay} = this.props;
+    
+    // trackTime = (
+    //   <Timer
+    //     start={trackToPlay.trackTimeMillis}
+    //     isCounting={isPlaying}
+    //     resetAudioPlayer={this.togglePlay}
+    //   />
+    // );
 
-    let trackTime = <h3>--:--</h3>;
-    let audio = null;
-    if (trackToPlay) {
-      trackTime = (
-        <Timer
-          start={trackToPlay.trackTimeMillis}
-          isCounting={isPlaying}
-          resetAudioPlayer={this.togglePlay}
-        />
-      );
-      audio = (
+    const trackTime = trackToPlay
+    ? <TimeRemaining time={this.state.currentTime} />
+    : <h3>--:--</h3>;
+    const audio = trackToPlay
+    ? (
         <audio
+          id='audioPlayer'
           ref={player => this.player = player}
           src={trackToPlay.previewUrl}
+          onTimeUpdate={this.handleTimeUptate}
         />
-      );
-    }
+      )
+    : null;
+    
   
     return (
       <div className='AudioPlayer__container'>

@@ -53,7 +53,7 @@ class Timer extends Component {
   render() {
     // console.log('TIMER STATE', this.state);
     return ( 
-        <h3>{moment(this.state.timeLeft).format('mm:ss') || '--:--'}</h3>
+      <h3>{moment(this.state.timeLeft).format('mm:ss') || '--:--'}</h3>
     )
   }
 }

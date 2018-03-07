@@ -30,7 +30,7 @@ class AudioPlayer extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.trackToPlay) {
+    if (this.props.trackToPlay !== prevProps.trackToPlay) {
       const audio = document.getElementById('audioPlayer');
       audio.addEventListener('loadedmetadata', () => {
         this.setState({
@@ -42,14 +42,16 @@ class AudioPlayer extends Component {
   }
 
   handleTimeUptate() {
-    if (this.state.currentTime < 1000) {
-      console.log('Getting here', this.state.duration * 1000)
-      this.setState({currentTime: this.state.duration * 1000}) // its not resetting the time
-      this.togglePlay();
+    if (this.player.ended) {
+      this.setState({
+        currentTime: this.state.duration * 1000,
+        isPlaying: false
+      });
+    } else {
+      this.setState({
+        currentTime: Math.floor(this.state.duration - this.player.currentTime) * 1000
+      });
     }
-    this.setState({
-      currentTime: Math.floor(this.state.duration - this.player.currentTime) * 1000
-    })
   }
 
   togglePlay() {
@@ -64,7 +66,7 @@ class AudioPlayer extends Component {
   }
 
   render() {
-    const {isPlaying} = this.state;
+    const {isPlaying, currentTime} = this.state;
     const {trackToPlay} = this.props;
     
     // trackTime = (
@@ -76,7 +78,7 @@ class AudioPlayer extends Component {
     // );
 
     const trackTime = trackToPlay
-    ? <TimeRemaining time={this.state.currentTime} />
+    ? <TimeRemaining time={currentTime} />
     : <h3>--:--</h3>;
     const audio = trackToPlay
     ? (
@@ -88,7 +90,6 @@ class AudioPlayer extends Component {
         />
       )
     : null;
-    
   
     return (
       <div className='AudioPlayer__container'>

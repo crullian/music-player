@@ -15,7 +15,7 @@ class SongItem extends Component {
         onClick={() => this.props.handleSelectSong(song)}
       >
         <img
-          src={song.artwork}
+          src={song.artworkUrl100}
           width='160'
           height='160' 
           alt='track artwork' 

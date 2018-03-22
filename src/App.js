@@ -35,18 +35,20 @@ class App extends Component {
   }
 
   handleFetchSongs() {
-    console.log('Q', this.state.searchTerm);
     const searchTerm = this.state.searchTerm.toLowerCase().replace(' ', '+');
-    fetch(`https://itunes.apple.com/search?term=${searchTerm}&media=music`).then(res => { 
-      return res.json();
+    fetch(`https://itunes.apple.com/search?term=${searchTerm}&media=music`).then(res => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        console.error(`Network response was not ok: ${res}`)
+      }
     }).then(json => {
-      console.log('JSON', json.results);
       this.setState({
         songs: json.results,
         selectedTrack: null,
         searchTerm: ''
       });
-    })
+    }).catch(error => console.error(`There was a problem with your fetch operation: ${error.message}`));
   }
 
   render() {

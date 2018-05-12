@@ -55,6 +55,9 @@ class AudioPlayer extends Component {
   }
 
   togglePlay() {
+    if (!this.props.trackToPlay) {
+      return;
+    }
     if (this.state.isPlaying) {
       this.player.pause()
     } else {

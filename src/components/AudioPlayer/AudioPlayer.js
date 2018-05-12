@@ -99,9 +99,9 @@ class AudioPlayer extends Component {
         <AppBar
           style={{padding: '0px'}}
           titleStyle={{display: 'none'}}
-          iconStyleLeft={{margin: '4px 4px 0px'}}
+          iconStyleLeft={{margin: '0px 0px -4px'}}
           iconElementLeft={trackToPlay && 
-            <img src={trackToPlay.artwork} alt='track artwork' />
+            <img src={trackToPlay.artworkUrl100} alt='track artwork' />
           }
           showMenuIconButton={!!trackToPlay}
           className='AudioPlayer__tool-bar'

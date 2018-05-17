@@ -8,12 +8,12 @@ libraries:
 
 handlers:
 - url: /(.*\.(js|css|scss|md|ico|png|gif|jpg|jpeg|svg|txt|map))
-  static_files: client/build/\1
-  upload: client/build/(.*\.(js|css|scss|md|ico|png|gif|jpg|jpeg|svg|txt|map))
+  static_files: build/\1
+  upload: build/(.*\.(js|css|scss|md|ico|png|gif|jpg|jpeg|svg|txt|map))
 
 - url: /.*
-  static_files: client/build/index.html
-  upload: client/build/index.html
+  static_files: build/index.html
+  upload: build/index.html
 
 skip_files: |
   ^(.*/)?(

@@ -1,0 +1,38 @@
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+libraries:
+- name: webapp2
+  version: latest
+
+handlers:
+- url: /(.*\.(js|css|scss|md|ico|png|gif|jpg|jpeg|svg|txt|map))
+  static_files: client/build/\1
+  upload: client/build/(.*\.(js|css|scss|md|ico|png|gif|jpg|jpeg|svg|txt|map))
+
+- url: /.*
+  static_files: client/build/index.html
+  upload: client/build/index.html
+
+skip_files: |
+  ^(.*/)?(
+  (app\.yaml)|
+  (index\.yaml)|
+  (\..*)|
+  (src)|
+  (node_modules)|
+  (.*\.pyc)|
+  (.*\.bat)|
+  (.*\.psd)|
+  (Thumbs\.db)|
+  (.*\.svn/.*)|
+  (.*\.lnk)|
+  (.*\.datastore)|
+  (_darcs/.*)|
+  (nbproject/.*)|
+  (.*\.swp)|
+  (.*\.log)|
+  (tests)|
+  )$
+

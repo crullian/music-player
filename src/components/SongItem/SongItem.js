@@ -15,16 +15,16 @@ class SongItem extends Component {
         onClick={() => this.props.handleSelectSong(song)}
       >
         <img
-          src={song.artworkUrl100}
+          src={song.snippet.thumbnails.default.url}
           width='160'
           height='160' 
           alt='track artwork' 
           className='SongItem-img'
         />
         <div className='SongItem-info'>
-          <h3>{song.trackName}</h3>
-          <p>{song.artistName}</p>
-          <p>{trackTime}</p>
+          <h3>{song.snippet.title}</h3>
+          {/*<p>{song.artistName}</p>*/}
+          {/*<p>{trackTime}</p>*/}
           {selected && 
             <div className='SongItem-info-em'>
               <em>Currently selected...</em>

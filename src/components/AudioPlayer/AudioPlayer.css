@@ -14,8 +14,8 @@
 }
 
 .AudioPlayer__info {
-  margin-left: 10px;
-  width: 64%;
+  margin-left: 20px;
+  width: 62%;
 }
 
 .AudioPlayer__info h2 {
@@ -27,19 +27,26 @@
 }
 
 .AudioPlayer__fab {
-  position: absolute;
-  right: 20px;
-  margin-top: -25px;
   z-index: 1200;
+  position: fixed;
+  right: 35px;
+  bottom: 35px;
+  z-index: 1200;
+}
+
+.youTube-player {
+  display: none;
 }
 
 /****************** Media Query *****************/ 
 
 @media screen and (min-device-width: 480px) {
   .AudioPlayer__tool-bar {
-    padding-left: 75px !important;
+    // padding-left: 75px !important;
   }
   .AudioPlayer__fab {
+    position: absolute;
+    bottom: -28px;
     right: 43px;
   }
 }

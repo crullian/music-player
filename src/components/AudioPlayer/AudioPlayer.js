@@ -134,7 +134,23 @@ class AudioPlayer extends Component {
           titleStyle={{display: 'none'}}
           iconStyleLeft={{margin: '0px 0px -4px'}}
           iconElementLeft={trackToPlay && 
-            <img src={trackToPlay.snippet.thumbnails.medium.url} width="120" height="100" alt='track artwork' />
+            <YouTube
+              className="youTube-player"
+              videoId={trackToPlay.id.videoId}
+              onReady={this.onReady}
+              onPlay={this.onPlay}
+              onPause={this.onPause}
+              opts={{
+                height: '120',
+                width: '103',
+                playerVars: {
+                  playsinline: 1,
+                  controls: 0,
+                  modestbranding: 1
+                }
+              }}
+              onStateChange={this.onStateChange}
+            />
           }
           showMenuIconButton={!!trackToPlay}
           className='AudioPlayer__tool-bar'
@@ -145,16 +161,6 @@ class AudioPlayer extends Component {
             </h2>
             { trackTime }
             {/* audio */}
-            {trackToPlay && 
-              <YouTube
-                className="youTube-player"
-                videoId={trackToPlay.id.videoId}
-                onReady={this.onReady}
-                onPlay={this.onPlay}
-                onPause={this.onPause}
-                onStateChange={this.onStateChange}
-              />
-            }
           </div>
         </AppBar>
         

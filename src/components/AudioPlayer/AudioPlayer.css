@@ -29,13 +29,15 @@
 .AudioPlayer__fab {
   z-index: 1200;
   position: fixed;
-  right: 35px;
-  bottom: 35px;
+  right: 20px;
+  bottom: 20px;
   z-index: 1200;
 }
 
 .youTube-player {
-  display: none;
+  // display: flex;
+  // position: absolute;
+  // left: -150px;
 }
 
 /****************** Media Query *****************/ 

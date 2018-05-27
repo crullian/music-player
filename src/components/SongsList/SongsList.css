@@ -25,7 +25,13 @@
 
 /****************** Media Query *****************/ 
 
-@media screen and (min-device-width: 480px) {
+@media screen and (min-width: 400px) {
+  .SongsList__flex-container {
+    width: 400px;
+  }
+}
+
+@media screen and (min-width: 860px) {
   .SongsList__flex-container {
     width: 832px;
   }

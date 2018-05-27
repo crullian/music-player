@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import SongsList from './components/SongsList/SongsList';
 import AudioPlayer from './components/AudioPlayer/AudioPlayer';
-// import YouTubePlayer from './components/YouTubePlayer/YouTubePlayer';
-// import songsJSON from './data/songs';
 
 import TextField from 'material-ui/TextField';
 import IconButton from 'material-ui/IconButton';
@@ -22,10 +20,6 @@ class App extends Component {
     this.handleFetchSongs = this.handleFetchSongs.bind(this);
   }
 
-  componentDidMount() {    
-
-  }
-
   handleSongSelection(song) {
     this.setState({
       selectedTrack: song
@@ -40,36 +34,16 @@ class App extends Component {
 
   handleFetchSongs() {
     const searchTerm = this.state.searchTerm.toLowerCase();
-    console.log('searchTerm', searchTerm);
     const request = window.gapi.client.youtube.search.list({
       q: searchTerm,
       part: 'snippet',
       maxResults: 20
     });
     request.execute((response) => {
-      console.log('RESPONSE ITEMS', response)
-      // let title = response.items[0].snippet.title;
-      // let vidId = response.items[0].id.videoId;
-      // console.log('Title: ', title, 'Video ID: ', vidId);
-      // $('#search-container').html('<h4>' + title + '</h4>');
-      // player.cueVideoById(vidId, 0, 'default');
       this.setState({
         songs: response.items
       })
     });
-    // fetch(`https://itunes.apple.com/search?term=${searchTerm}&media=music`).then(res => {
-    //   if (res.ok) {
-    //     return res.json();
-    //   } else {
-    //     console.error(`Network response was not ok: ${res}`)
-    //   }
-    // }).then(json => {
-    //   this.setState({
-    //     songs: json.results,
-    //     selectedTrack: null,
-    //     searchTerm: ''
-    //   });
-    // }).catch(error => console.error(`There was a problem with your fetch operation: ${error.message}`));
   }
 
   render() {
@@ -77,7 +51,7 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <h1 className="App-title">Music Player</h1>
+          <h2 className="App-title">YTPlayer</h2>
           <div className="App-searchfield-container">
             <TextField
               id="App-textfield"
@@ -85,7 +59,7 @@ class App extends Component {
               value={this.state.searchTerm}
               hintText='Search an artist'
               hintStyle={{color: '#fff'}}
-              style={{width: '200px'}}
+              style={{width: '180px'}}
             />
             <IconButton iconClassName="material-icons" onClick={this.handleFetchSongs}>
               search

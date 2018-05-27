@@ -22,8 +22,8 @@
 }
 
 .SongItem-img {
-  width: 160px;
-  height: 160px;
+  width: 100px;
+  height: 100px;
 }
 
 .SongItem-info {
@@ -34,6 +34,7 @@
 }
 
 .SongItem-info h3 {
+  font-size: 14px;
   margin-top: 0;
   overflow: hidden;
   white-space: pre-wrap;
@@ -45,6 +46,7 @@
 }
 
 .SongItem-info-em {
+  font-size: 12px;
   margin-top: auto;
 }
 

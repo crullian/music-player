@@ -4,7 +4,7 @@ import YouTube from 'react-youtube';
 // import Timer from '../../components/Timer/Timer';
 import TimeRemaining from '../../components/TimeRemaining';
 
-import YouTubePlayer from '../../components/YouTubePlayer/YouTubePlayer';
+// import YouTubePlayer from '../../components/YouTubePlayer/YouTubePlayer';
 
 import AppBar from 'material-ui/AppBar';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
@@ -26,6 +26,7 @@ class AudioPlayer extends Component {
   }
 
   componentWillReceiveProps(newProps) {
+    this.player && this.player.clearVideo()
     if (newProps && this.state.isPlaying) {
       this.setState({
         isPlaying: false
@@ -35,6 +36,7 @@ class AudioPlayer extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.trackToPlay !== prevProps.trackToPlay) {
+      console.log('NEW TRACK TO PLAY', this.player && this.player.getCurrentTime())
       // const audio = document.getElementById('audioPlayer');
       // audio.addEventListener('loadedmetadata', () => {
         // this.setState({
@@ -89,14 +91,28 @@ class AudioPlayer extends Component {
     this.setState({isPlaying: false})
   }
 
+  // getDuration = (event) => {
+  //   return new Promise((res, rej) => {
+  //     const duration = event.target.getDuration();
+  //     if (duration > 0) {
+  //       res(duration);
+  //     } else {
+  //       rej('Shit happens');
+  //     }
+  //   })
+  // }
+
   onStateChange = (event) => {
+    console.log('STATE CHANGE', event)
     if (event.data === 5) {
-      const duration = event.target.getDuration();
-      console.log('STATE CHANGE', event, duration)
-      this.setState({
-        duration: duration,
-        currentTime: duration * 1000
-      });
+      this.player = event.target;
+      console.log('this player', this.player)
+      // this.getDuration(event).then((duration) => {      
+      //   this.setState({
+      //     duration: duration,
+      //     currentTime: duration * 1000
+      //   });
+      // }).catch(err => console.error('ERR', err));
     }
   }
 
@@ -116,21 +132,11 @@ class AudioPlayer extends Component {
     const trackTime = trackToPlay
     ? <TimeRemaining time={currentTime} />
     : <h3>--:--</h3>;
-    const audio = trackToPlay
-    ? (
-        <audio
-          id='audioPlayer'
-          ref={player => this.player = player}
-          src={trackToPlay.previewUrl}
-          onTimeUpdate={this.handleTimeUptate}
-        />
-      )
-    : null;
   
     return (
       <div className='AudioPlayer__container'>
         <AppBar
-          style={{padding: '0px', background: '#fff'}}
+          style={{padding: '0px', background: '#000'}}
           titleStyle={{display: 'none'}}
           iconStyleLeft={{margin: '0px 0px -4px'}}
           iconElementLeft={trackToPlay && 
@@ -141,12 +147,14 @@ class AudioPlayer extends Component {
               onPlay={this.onPlay}
               onPause={this.onPause}
               opts={{
-                height: '120',
-                width: '103',
+                height: '80',
+                width: '100',
                 playerVars: {
                   playsinline: 1,
                   controls: 0,
-                  modestbranding: 1
+                  modestbranding: 1,
+                  enablejsapi: 1,
+                  origin: 'https://youtube-playlist-203322.appspot.com/'
                 }
               }}
               onStateChange={this.onStateChange}
@@ -160,7 +168,6 @@ class AudioPlayer extends Component {
               {(trackToPlay && trackToPlay.snippet.title) || 'Select a track'}
             </h2>
             { trackTime }
-            {/* audio */}
           </div>
         </AppBar>
         

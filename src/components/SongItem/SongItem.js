@@ -7,7 +7,7 @@ class SongItem extends Component {
 
   render() {
     const {song, selected} = this.props;
-    const trackTime  = moment(song.trackTimeMillis).format('mm:ss');
+    // const trackTime  = moment(song.trackTimeMillis).format('mm:ss');
 
     return (
       <div
@@ -15,9 +15,7 @@ class SongItem extends Component {
         onClick={() => this.props.handleSelectSong(song)}
       >
         <img
-          src={song.snippet.thumbnails.default.url}
-          width='160'
-          height='160' 
+          src={song.snippet.thumbnails.default.url} 
           alt='track artwork' 
           className='SongItem-img'
         />

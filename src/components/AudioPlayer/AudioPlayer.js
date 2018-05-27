@@ -117,7 +117,7 @@ class AudioPlayer extends Component {
   }
 
   render() {
-    console.log('THIS STATE', this.state)
+    // console.log('THIS STATE', this.state)
     const {isPlaying, currentTime} = this.state;
     const {trackToPlay} = this.props;
     

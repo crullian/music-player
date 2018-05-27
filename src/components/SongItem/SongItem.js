@@ -17,22 +17,23 @@ class SongItem extends Component {
     return (
       <div
         className={`SongItem-container${selected ? ' selected' : ''}`}
-        onClick={() => this.props.handleSelectSong(song)}
       >
-        <img
-          src={song.snippet.thumbnails.default.url} 
-          alt='track artwork' 
-          className='SongItem-img'
-        />
-        <div className='SongItem-info'>
-          <h3>{song.snippet.title}</h3>
-          {/*<p>{song.artistName}</p>*/}
-          {/*<p>{trackTime}</p>*/}
-          {selected && 
-            <div className='SongItem-info-em'>
-              <em>Currently selected...</em>
-            </div>
-          }
+        <div style={{display: 'flex'}} onClick={() => this.props.handleSelectSong(song)}>
+          <img
+            src={song.snippet.thumbnails.default.url} 
+            alt='track artwork' 
+            className='SongItem-img'
+          />
+          <div className='SongItem-info'>
+            <h3>{song.snippet.title}</h3>
+            {/*<p>{song.artistName}</p>*/}
+            {/*<p>{trackTime}</p>*/}
+            {selected && 
+              <div className='SongItem-info-em'>
+                <em>Currently selected...</em>
+              </div>
+            }
+          </div>
         </div>
         <IconMenu
           iconButtonElement={<IconButton><MoreVertIcon color={'#000'}/></IconButton>}
@@ -40,11 +41,10 @@ class SongItem extends Component {
           targetOrigin={{horizontal: 'right', vertical: 'bottom'}}
           useLayerForClickAway={true}
         >
-          <MenuItem style={{color: '#000'}} primaryText="Refresh" />
-          <MenuItem style={{color: '#000'}} primaryText="Send feedback" />
+          <MenuItem style={{color: '#000'}} primaryText="Add to playlist" />
+          <MenuItem style={{color: '#000'}} primaryText="Share" />
           <MenuItem style={{color: '#000'}} primaryText="Settings" />
           <MenuItem style={{color: '#000'}} primaryText="Help" />
-          <MenuItem style={{color: '#000'}} primaryText="Sign out" />
         </IconMenu>
       </div>
     )

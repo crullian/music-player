@@ -12,12 +12,12 @@
 
 .SongItem-container:hover {
   cursor: pointer;
-  background: #d0d0d0;
+  // background: #d0d0d0;
   box-shadow: rgba(32, 33, 36, 0.28) 0 2px 15px;
 }
 
 .SongItem-container.selected {
-  background: #d0d0d0;
+  // background: #d0d0d0;
   box-shadow: rgba(32, 33, 36, 0.28) 0 10px 15px;
 }
 
@@ -30,7 +30,7 @@
   display: flex;
   flex-flow: column;
   margin: 10px;
-  width: 175px;
+  width: 200px;
 }
 
 .SongItem-info h3 {

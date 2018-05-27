@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+import IconButton from 'material-ui/IconButton';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+
 import './SongItem.css';
 
 class SongItem extends Component {
@@ -29,6 +34,18 @@ class SongItem extends Component {
             </div>
           }
         </div>
+        <IconMenu
+          iconButtonElement={<IconButton><MoreVertIcon color={'#000'}/></IconButton>}
+          anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+          targetOrigin={{horizontal: 'right', vertical: 'bottom'}}
+          useLayerForClickAway={true}
+        >
+          <MenuItem style={{color: '#000'}} primaryText="Refresh" />
+          <MenuItem style={{color: '#000'}} primaryText="Send feedback" />
+          <MenuItem style={{color: '#000'}} primaryText="Settings" />
+          <MenuItem style={{color: '#000'}} primaryText="Help" />
+          <MenuItem style={{color: '#000'}} primaryText="Sign out" />
+        </IconMenu>
       </div>
     )
   }

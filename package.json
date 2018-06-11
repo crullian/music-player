@@ -2,16 +2,22 @@
   "name": "music-player",
   "version": "0.1.0",
   "private": true,
+  "main": "index.js",
   "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
     "material-ui": "^0.20.0",
     "moment": "^2.20.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-scripts": "1.1.1",
-    "react-youtube": "^7.6.0"
+    "react-youtube": "^7.6.0",
+    "youtube-dl": "^1.12.2"
   },
+  "proxy": "http://localhost:8080/",
   "scripts": {
-    "start": "react-scripts start",
+    "start": "node index.js",
+    "dev": "react-scripts start",
     "build": "react-scripts build",
     "deploy": "yarn build && gcloud app deploy --project youtube-playlist-203322 --version=1",
     "test": "react-scripts test --env=jsdom",

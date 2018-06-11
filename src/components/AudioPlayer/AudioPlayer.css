@@ -43,6 +43,8 @@
   // display: flex;
   // position: absolute;
   // left: -150px;
+  width: 100px;
+  height: 80px;
 }
 
 /****************** Media Query *****************/ 

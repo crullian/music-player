@@ -20,6 +20,17 @@ class App extends Component {
     this.handleFetchSongs = this.handleFetchSongs.bind(this);
   }
 
+  componentDidMount() {
+    fetch('/api').then(res => {
+      if (res.ok) {
+        return res.text();
+      }
+      throw Error('BAD');
+    }).then(json => {
+      console.log('JSON!', json)
+    }).catch(err => console.error('ERROR! :(', err))
+  }
+
   handleSongSelection(song) {
     this.setState({
       selectedTrack: song
@@ -48,6 +59,7 @@ class App extends Component {
 
   render() {
     const {selectedTrack, songs} = this.state;
+    console.log('NEW TRACK EVERYBODY', selectedTrack)
     return (
       <div className="App">
         <header className="App-header">

@@ -59,7 +59,7 @@ class App extends Component {
 
   render() {
     const {selectedTrack, songs} = this.state;
-    console.log('NEW TRACK EVERYBODY', selectedTrack)
+    // console.log('NEW TRACK EVERYBODY', selectedTrack)
     return (
       <div className="App">
         <header className="App-header">

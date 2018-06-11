@@ -26,7 +26,7 @@ class AudioPlayer extends Component {
   }
 
   componentWillReceiveProps(newProps) {
-    this.player && this.player.clearVideo()
+    // this.player && this.player.clearVideo()
     if (newProps && this.state.isPlaying) {
       this.setState({
         isPlaying: false
@@ -164,7 +164,7 @@ class AudioPlayer extends Component {
               ref={player => this.player = player}
               src={trackToPlay}
               className="youTube-player"
-              />
+            />
           }
           showMenuIconButton={!!trackToPlay}
           className='AudioPlayer__tool-bar'

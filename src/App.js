@@ -17,6 +17,7 @@ class App extends Component {
       selectedTrack: null,
       searchTerm: '',
       songs: [],
+      playlists: [],
       isSignedIn: false
     }
     this.handleSongSelection = this.handleSongSelection.bind(this);
@@ -30,6 +31,7 @@ class App extends Component {
       this.setState({
         isSignedIn: res.isSignedIn
       })
+      this.handleFetchPlaylists();
     });
   }
 
@@ -60,7 +62,20 @@ class App extends Component {
   }
 
   handleFetchPlaylists = () => {
-
+    const request = window.gapi.client.request({
+      'method': 'GET',
+      'path': '/youtube/v3/playlists',
+      'params': {
+        'mine': 'true',
+        'maxResults': '20',
+        'part': 'snippet,contentDetails'
+      }
+    });
+    request.execute((response) => {
+      this.setState({
+        playlists: response.items
+      })
+    });
   }
 
   handleSignIn = () => {
@@ -78,8 +93,14 @@ class App extends Component {
   }
 
   render() {
-    const {selectedTrack, songs, isSignedIn} = this.state;
+  {/*<RaisedButton
+    secondary={true}
+    label="Sign Out"
+    onClick={this.handleSignOut}
+  />*/}
+    const {selectedTrack, songs, isSignedIn, playlists} = this.state;
     // console.log('NEW TRACK EVERYBODY', selectedTrack)
+    console.log('PLAYLISTS', playlists);
     return (
       <div className="App">
         <header className="App-header">
@@ -99,20 +120,15 @@ class App extends Component {
           </div>
         </header>
         <AudioPlayer trackToPlay={selectedTrack} />
-        {!isSignedIn ?
+        {!isSignedIn &&
           <RaisedButton
             primary={true}
             label="Sign In"
             onClick={this.handleSignIn}
           />
-          :
-          <RaisedButton
-            secondary={true}
-            label="Sign Out"
-            onClick={this.handleSignOut}
-          />
         }
         <SongsList songs={songs} handleSelectSong={this.handleSongSelection}/>
+      {/*<Playlists playlists={playlists} />*/}
       </div>
     );
   }

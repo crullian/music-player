@@ -24,7 +24,7 @@ const firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
 const onYouTubeApiLoad = () => {
-  window.gapi.client.setApiKey('AIzaSyAz3W_FsqnyZUL9ImA8BrBeInXpnCk7Kv8');
+  window.gapi.client.setApiKey('AIzaSyCEdUUQ_t24Jr5n6cN8k3yqtMX_xiXsoPM');
 };
 
 window.onClientLoad = () => {

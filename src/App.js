@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
+import GoogleApi from './api/GoogleApi';
 import SongsList from './components/SongsList/SongsList';
 import AudioPlayer from './components/AudioPlayer/AudioPlayer';
 
 import TextField from 'material-ui/TextField';
 import IconButton from 'material-ui/IconButton';
+
+import RaisedButton from 'material-ui/RaisedButton';
 
 import './App.css';
 
@@ -13,7 +16,8 @@ class App extends Component {
     this.state = {
       selectedTrack: null,
       searchTerm: '',
-      songs: []
+      songs: [],
+      isSignedIn: false
     }
     this.handleSongSelection = this.handleSongSelection.bind(this);
     this.handleSearchInput = this.handleSearchInput.bind(this);
@@ -21,14 +25,12 @@ class App extends Component {
   }
 
   componentDidMount() {
-    fetch('/api').then(res => {
-      if (res.ok) {
-        return res.text();
-      }
-      throw Error('BAD');
-    }).then(json => {
-      console.log('JSON!', json)
-    }).catch(err => console.error('ERROR! :(', err))
+    const googleApi = new GoogleApi();
+    googleApi.init().then(res => {
+      this.setState({
+        isSignedIn: res.isSignedIn
+      })
+    });
   }
 
   handleSongSelection(song) {
@@ -57,8 +59,26 @@ class App extends Component {
     });
   }
 
+  handleFetchPlaylists = () => {
+
+  }
+
+  handleSignIn = () => {
+    const googleApi = new GoogleApi();
+    googleApi.signIn().then(res => {
+      this.setState({isSignedIn: true})
+    }).catch(err => console.error('ERROR!', err));
+  }
+
+  handleSignOut = () => {
+    const googleApi = new GoogleApi();
+    googleApi.signOut().then(res => {
+      this.setState({isSignedIn: false})
+    }).catch(err => console.error('ERROR!', err));
+  }
+
   render() {
-    const {selectedTrack, songs} = this.state;
+    const {selectedTrack, songs, isSignedIn} = this.state;
     // console.log('NEW TRACK EVERYBODY', selectedTrack)
     return (
       <div className="App">
@@ -79,6 +99,19 @@ class App extends Component {
           </div>
         </header>
         <AudioPlayer trackToPlay={selectedTrack} />
+        {!isSignedIn ?
+          <RaisedButton
+            primary={true}
+            label="Sign In"
+            onClick={this.handleSignIn}
+          />
+          :
+          <RaisedButton
+            secondary={true}
+            label="Sign Out"
+            onClick={this.handleSignOut}
+          />
+        }
         <SongsList songs={songs} handleSelectSong={this.handleSongSelection}/>
       </div>
     );

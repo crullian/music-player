@@ -18,16 +18,17 @@ app.post('/getUrl', (req, res) => {
   console.log('REQ>>>>>>>>', req.body.url);
   youtubedl.getInfo(req.body.url, null, (err, info) => {
     if (err) {
-      console.log('ERROR', err);
+      console.log('ERROR:', err);
     } else {
-      console.log('id:', info.id);
-      console.log('title:', info.title);
-      console.log('url:', info.url);
-      console.log('thumbnail:', info.thumbnail);
-      console.log('description:', info.description);
-      console.log('filename:', info._filename);
-      console.log('format id:', info.format_id);
-      res.send({url: info.url});
+      res.send({
+        id: info.id,
+        title: info.title,
+        url: info.url,
+        thumbnail: info.thumbnail,
+        description: info.description,
+        filename: info._filename,
+        format_id: info.format_id
+      });
     }
   });
     // res.send('NOT YET');

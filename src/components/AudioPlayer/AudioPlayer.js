@@ -121,7 +121,7 @@ class AudioPlayer extends Component {
     // console.log('THIS STATE', this.state)
     const {isPlaying, currentTime} = this.state;
     const {trackToPlay} = this.props;
-    
+    console.log('%ctrackToPlay', 'color:yellow', trackToPlay);
     // trackTime = (
     //   <Timer
     //     start={trackToPlay.trackTimeMillis}
@@ -162,7 +162,7 @@ class AudioPlayer extends Component {
           iconElementLeft={trackToPlay &&
             <video
               ref={player => this.player = player}
-              src={trackToPlay}
+              src={trackToPlay.url}
               className="youTube-player"
             />
           }
@@ -171,7 +171,7 @@ class AudioPlayer extends Component {
         >
           <div className='AudioPlayer__info'>
             <h2>
-              {/*(trackToPlay && trackToPlay.snippet.title) || 'Select a track'*/}
+              {(trackToPlay && trackToPlay.title) || 'Select a track'}
             </h2>
             {/* trackTime */}
           </div>

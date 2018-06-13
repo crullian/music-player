@@ -28,7 +28,7 @@ class SongsList extends Component {
       throw Error('BAD');
     }).then(json => {
       console.log('JSON!', json)
-      this.props.handleSelectSong(json.url);
+      this.props.handleSelectSong(json);
     }).catch(err => console.error('ERROR! :(', err))
   }
 

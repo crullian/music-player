@@ -1,5 +1,6 @@
 .SongItem-container {
   display: flex;
+  justify-content: space-between;
   width: 400px;
   margin: 8px 8px 10px 8px;
   background: #f9f9f9;

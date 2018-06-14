@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import SongItem from '../../components/SongItem/SongItem';
+import PlaylistItem from '../../components/PlaylistItem/PlaylistItem';
 
 import './Playlists.css';
 
@@ -30,22 +30,22 @@ class Playlists extends Component {
     //   console.log('JSON!', json)
     //   this.props.handleSelectSong(json.url);
     // }).catch(err => console.error('ERROR! :(', err))
+                // handleSelectSong={() => this.handleClickSong(song, index)}
+                // selected={itemSelected === song.id.videoId}
   }
 
   render() {
     const {playlists} = this.props;
-    const {itemSelected} = this.state;
+    // const {itemSelected} = this.state;
 
     return (
       <div className='Playlists__flex-container'>
         {
-          songs && songs.map((song, index) => {
+          playlists && playlists.map(playlist => {
             return (
-              <SongItem
-                key={index}
-                song={song}
-                handleSelectSong={() => this.handleClickSong(song, index)}
-                selected={itemSelected === song.id.videoId}
+              <PlaylistItem
+                key={playlist.id}
+                playlist={playlist}
               />
             )
           })

@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import GoogleApi from './api/GoogleApi';
-import SongsList from './components/SongsList/SongsList';
+
+
 import AudioPlayer from './components/AudioPlayer/AudioPlayer';
+import Loader from './components/Loader/Loader';
+import Playlists from './components/Playlists/Playlists';
+import SongsList from './components/SongsList/SongsList';
 
 import TextField from 'material-ui/TextField';
 import IconButton from 'material-ui/IconButton';
-
 import RaisedButton from 'material-ui/RaisedButton';
 
 import './App.css';
@@ -16,9 +19,11 @@ class App extends Component {
     this.state = {
       selectedTrack: null,
       searchTerm: '',
-      songs: [],
-      playlists: [],
-      isSignedIn: false
+      songs: null,
+      playlists: null,
+      isSignedIn: true,
+      isFetchingTrack: false,
+      isLoading: true
     }
     this.handleSongSelection = this.handleSongSelection.bind(this);
     this.handleSearchInput = this.handleSearchInput.bind(this);
@@ -28,17 +33,39 @@ class App extends Component {
   componentDidMount() {
     const googleApi = new GoogleApi();
     googleApi.init().then(res => {
-      this.setState({
-        isSignedIn: res.isSignedIn
-      })
-      this.handleFetchPlaylists();
+      if (res.isSignedIn) {
+        this.setState({
+          isSignedIn: res.isSignedIn
+        });
+        this.handleFetchPlaylists();
+      } else {
+        this.setState({
+          isLoading: false,
+          isSignedIn: false
+        });
+      }
     });
   }
 
   handleSongSelection(song) {
-    this.setState({
-      selectedTrack: song
-    })
+    this.setState({isFetchingTrack: true});
+    return fetch('/getUrl', {
+      method: 'POST',
+      body: JSON.stringify({ url:`https://www.youtube.com/watch?v=${song.id.videoId}`}),
+      headers: {
+        'content-type': 'application/json'
+      }
+    }).then(res => {
+      if (res.ok) {
+        return res.json();
+      }
+      throw Error('BAD');
+    }).then(json => {
+      this.setState({
+        selectedTrack: json,
+        isFetchingTrack: false
+      })
+    }).catch(err => console.error('ERROR! :(', err))
   }
 
   handleSearchInput(e) {
@@ -46,6 +73,12 @@ class App extends Component {
       searchTerm: e.target.value
     });
   }
+
+  handleKeyPress = e => {
+    if (e.key === 'Enter') {
+      this.handleFetchSongs();
+    }
+  } 
 
   handleFetchSongs() {
     const searchTerm = this.state.searchTerm.toLowerCase();
@@ -73,7 +106,8 @@ class App extends Component {
     });
     request.execute((response) => {
       this.setState({
-        playlists: response.items
+        playlists: response.items,
+        isLoading: false
       })
     });
   }
@@ -82,25 +116,22 @@ class App extends Component {
     const googleApi = new GoogleApi();
     googleApi.signIn().then(res => {
       this.setState({isSignedIn: true})
+      this.handleFetchPlaylists();
     }).catch(err => console.error('ERROR!', err));
   }
 
   handleSignOut = () => {
     const googleApi = new GoogleApi();
     googleApi.signOut().then(res => {
-      this.setState({isSignedIn: false})
+      this.setState({isSignedIn: false, playlists: null})
     }).catch(err => console.error('ERROR!', err));
   }
 
   render() {
-  {/*<RaisedButton
-    secondary={true}
-    label="Sign Out"
-    onClick={this.handleSignOut}
-  />*/}
-    const {selectedTrack, songs, isSignedIn, playlists} = this.state;
+    const { selectedTrack, songs, isSignedIn, playlists, searchTerm,
+      isFetchingTrack, isLoading } = this.state;
     // console.log('NEW TRACK EVERYBODY', selectedTrack)
-    console.log('PLAYLISTS', playlists);
+    // console.log('PLAYLISTS', playlists);
     return (
       <div className="App">
         <header className="App-header">
@@ -109,7 +140,8 @@ class App extends Component {
             <TextField
               id="App-textfield"
               onChange={this.handleSearchInput}
-              value={this.state.searchTerm}
+              onKeyPress={this.handleKeyPress}
+              value={searchTerm}
               hintText='Search an artist'
               hintStyle={{color: '#fff'}}
               style={{width: '180px'}}
@@ -119,16 +151,42 @@ class App extends Component {
             </IconButton>
           </div>
         </header>
-        <AudioPlayer trackToPlay={selectedTrack} />
-        {!isSignedIn &&
-          <RaisedButton
-            primary={true}
-            label="Sign In"
-            onClick={this.handleSignIn}
-          />
+        <AudioPlayer trackToPlay={selectedTrack} fetchingTrack={isFetchingTrack} />
+        
+        {isLoading ?
+          <Loader />
+          :
+          <div>
+            {songs && searchTerm &&
+              <SongsList songs={songs} handleSelectSong={this.handleSongSelection}/>
+            }
+            {playlists && (!songs || !searchTerm) &&
+              <Playlists playlists={playlists} />
+            }
+            {(!songs || !searchTerm) &&
+              <div className="Auth_flex-container">
+                <div className="Auth-card">
+                  {!isSignedIn && <h2 className="center-text">Sign in to view your playlists</h2>}
+                  <div className="Auth-button-container">
+                    {isSignedIn ?
+                      <RaisedButton
+                        primary={true}
+                        label="Sign Out"
+                        onClick={this.handleSignOut}
+                      />
+                      :
+                      <RaisedButton
+                        primary={true}
+                        label="Sign In"
+                        onClick={this.handleSignIn}
+                      />
+                    }
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
         }
-        <SongsList songs={songs} handleSelectSong={this.handleSongSelection}/>
-      {/*<Playlists playlists={playlists} />*/}
       </div>
     );
   }

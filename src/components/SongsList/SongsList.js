@@ -14,22 +14,7 @@ class SongsList extends Component {
 
   handleClickSong(song) {
     this.setState({itemSelected: song.id.videoId});
-    // this.props.handleSelectSong(song);
-    fetch('/getUrl', {
-      method: 'POST',
-      body: JSON.stringify({ url:`https://www.youtube.com/watch?v=${song.id.videoId}`}),
-      headers: {
-        'content-type': 'application/json'
-      }
-    }).then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      throw Error('BAD');
-    }).then(json => {
-      console.log('JSON!', json)
-      this.props.handleSelectSong(json);
-    }).catch(err => console.error('ERROR! :(', err))
+    this.props.handleSelectSong(song);
   }
 
   render() {

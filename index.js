@@ -15,7 +15,6 @@ app.get('/api', (req, res) => {
 });
 
 app.post('/getUrl', (req, res) => {
-  console.log('REQ>>>>>>>>', req.body.url);
   youtubedl.getInfo(req.body.url, null, (err, info) => {
     if (err) {
       console.log('ERROR:', err);
@@ -31,7 +30,6 @@ app.post('/getUrl', (req, res) => {
       });
     }
   });
-    // res.send('NOT YET');
 })
 
 app.get('*', (req, res) => {

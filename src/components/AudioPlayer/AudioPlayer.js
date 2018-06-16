@@ -17,7 +17,6 @@ class AudioPlayer extends Component {
       currentTime: null,
       duration: null
     }
-    this.player = null;
     this.togglePlay = this.togglePlay.bind(this);
     this.handleTimeUpdate = this.handleTimeUpdate.bind(this);
   }
@@ -75,11 +74,21 @@ class AudioPlayer extends Component {
     const trackTime = trackToPlay
     ? <TimeRemaining time={currentTime} />
     : <h3>--:--</h3>;
+    const audio = trackToPlay
+    ? (
+        <audio
+          id='audioPlayer'
+          ref={player => this.player = player}
+          src={trackToPlay.previewUrl}
+          onTimeUpdate={this.handleTimeUptate}
+        />
+      )
+    : null;
   
     return (
       <div className='AudioPlayer__container'>
         <AppBar
-          style={{padding: '0px', background: '#000'}}
+          style={{padding: '0px'}}
           titleStyle={{display: 'none'}}
           iconStyleLeft={{margin: '0px 0px -4px'}}
           iconElementLeft={trackToPlay && !fetchingTrack ?
@@ -92,7 +101,7 @@ class AudioPlayer extends Component {
             />
             : null
           }
-          showMenuIconButton={!!trackToPlay && !fetchingTrack}
+          showMenuIconButton={!!trackToPlay}
           className='AudioPlayer__tool-bar'
         >
         {fetchingTrack ?
@@ -104,6 +113,7 @@ class AudioPlayer extends Component {
               { (trackToPlay && trackToPlay.title) || 'Select a track' }
             </h2>
             { trackTime }
+            { audio }
           </div>
         }
         </AppBar>

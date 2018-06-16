@@ -9,33 +9,27 @@
 }
 
 .AudioPlayer__tool-bar h3 {
-  color: #fff;
+  color: #000;
   margin: 0 0 15px 0;
 }
 
 .AudioPlayer__info {
-  margin-left: 20px;
-  width: 62%;
+  margin-left: 10px;
+  width: 64%;
 }
 
 .AudioPlayer__info h2 {
-  font-size: 16px;
   margin-top: 15px;
-  color: #fff;
+  color: #000;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-.AudioPlayer__info h3 {
-  font-size: 14px;
-}
-
 .AudioPlayer__fab {
-  z-index: 1200;
-  position: fixed;
+  position: absolute;
   right: 20px;
-  bottom: 20px;
+  margin-top: -25px;
   z-index: 1200;
 }
 
@@ -48,8 +42,6 @@
 
 @media screen and (min-device-width: 480px) {
   .AudioPlayer__fab {
-    position: absolute;
-    bottom: -28px;
     right: 43px;
   }
 }

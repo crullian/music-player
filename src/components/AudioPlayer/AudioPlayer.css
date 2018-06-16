@@ -39,10 +39,7 @@
   z-index: 1200;
 }
 
-.youTube-player {
-  // display: flex;
-  // position: absolute;
-  // left: -150px;
+.player {
   width: 100px;
   height: 80px;
 }
@@ -50,9 +47,6 @@
 /****************** Media Query *****************/ 
 
 @media screen and (min-device-width: 480px) {
-  .AudioPlayer__tool-bar {
-    // padding-left: 75px !important;
-  }
   .AudioPlayer__fab {
     position: absolute;
     bottom: -28px;

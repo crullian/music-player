@@ -151,7 +151,7 @@ class App extends Component {
             </IconButton>
           </div>
         </header>
-        <AudioPlayer trackToPlay={selectedTrack} fetchingTrack={isFetchingTrack} />
+        <AudioPlayer trackToPlay={selectedTrack} fetchingTrack={isFetchingTrack} hasSongs={!!songs} />
         
         {isLoading ?
           <Loader />

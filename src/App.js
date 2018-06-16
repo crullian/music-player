@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import GoogleApi from './api/GoogleApi';
 
-
 import AudioPlayer from './components/AudioPlayer/AudioPlayer';
 import Loader from './components/Loader/Loader';
 import Playlists from './components/Playlists/Playlists';

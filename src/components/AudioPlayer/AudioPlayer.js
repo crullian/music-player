@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-// import Timer from '../../components/Timer/Timer';
+import Loader from '../../components/Loader/Loader';
 import TimeRemaining from '../../components/TimeRemaining';
 
 import AppBar from 'material-ui/AppBar';
@@ -18,30 +18,29 @@ class AudioPlayer extends Component {
       duration: null
     }
     this.togglePlay = this.togglePlay.bind(this);
-    this.handleTimeUptate = this.handleTimeUptate.bind(this);
-  }
-
-  componentWillReceiveProps(newProps) {
-    if (newProps && this.state.isPlaying) {
-      this.setState({
-        isPlaying: false
-      })
-    }
+    this.handleTimeUpdate = this.handleTimeUpdate.bind(this);
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.trackToPlay !== prevProps.trackToPlay) {
+      this.setState({isPlaying: true, currentTime: null})
+      this.player.play();
       const audio = document.getElementById('audioPlayer');
       audio.addEventListener('loadedmetadata', () => {
         this.setState({
-          duration: audio.duration,
-          currentTime: audio.duration * 1000
+          duration: this.player.duration,
+          currentTime: this.player.duration * 1000
         });
       }, false);
     }
   }
 
-  handleTimeUptate() {
+  componentWillUnmount() {
+    const audio = document.getElementById('audioPlayer');
+    audio.removeEventListener('loadedmetadata', () => {}, false);
+  }
+
+  handleTimeUpdate() {
     if (this.player.ended) {
       this.setState({
         currentTime: this.state.duration * 1000,
@@ -55,7 +54,7 @@ class AudioPlayer extends Component {
   }
 
   togglePlay() {
-    if (!this.props.trackToPlay) {
+    if (!this.props.trackToPlay || this.props.fetchingTrack) {
       return;
     }
     if (this.state.isPlaying) {
@@ -70,15 +69,7 @@ class AudioPlayer extends Component {
 
   render() {
     const {isPlaying, currentTime} = this.state;
-    const {trackToPlay} = this.props;
-    
-    // trackTime = (
-    //   <Timer
-    //     start={trackToPlay.trackTimeMillis}
-    //     isCounting={isPlaying}
-    //     resetAudioPlayer={this.togglePlay}
-    //   />
-    // );
+    const {trackToPlay, fetchingTrack, hasSongs} = this.props;
 
     const trackTime = trackToPlay
     ? <TimeRemaining time={currentTime} />
@@ -100,26 +91,40 @@ class AudioPlayer extends Component {
           style={{padding: '0px'}}
           titleStyle={{display: 'none'}}
           iconStyleLeft={{margin: '0px 0px -4px'}}
-          iconElementLeft={trackToPlay && 
-            <img src={trackToPlay.artworkUrl100} alt='track artwork' />
+          iconElementLeft={trackToPlay && !fetchingTrack ?
+            <video
+              id="audioPlayer"
+              ref={player => this.player = player}
+              src={trackToPlay.url}
+              className="player"
+              onTimeUpdate={this.handleTimeUpdate}
+            />
+            : null
           }
           showMenuIconButton={!!trackToPlay}
           className='AudioPlayer__tool-bar'
         >
+        {fetchingTrack ?
+          <Loader />
+          :
+          hasSongs &&
           <div className='AudioPlayer__info'>
             <h2>
-              {(trackToPlay && trackToPlay.trackName) || 'Select a track'}
+              { (trackToPlay && trackToPlay.title) || 'Select a track' }
             </h2>
             { trackTime }
             { audio }
           </div>
+        }
         </AppBar>
         
-        <FloatingActionButton secondary={true} className='AudioPlayer__fab'>
-          <FontIcon className="material-icons" onClick={this.togglePlay}>
-            {isPlaying ? 'pause' : 'play_arrow'}
-          </FontIcon>
-        </FloatingActionButton>
+        {trackToPlay &&
+          <FloatingActionButton className='AudioPlayer__fab'>
+            <FontIcon className="material-icons" style={{color: '#fff'}} onClick={this.togglePlay}>
+              {(isPlaying && !fetchingTrack) ? 'pause' : 'play_arrow'}
+            </FontIcon>
+          </FloatingActionButton>
+        }
       </div>
     )
   }

@@ -33,12 +33,14 @@
   z-index: 1200;
 }
 
+.player {
+  width: 100px;
+  height: 80px;
+}
+
 /****************** Media Query *****************/ 
 
 @media screen and (min-device-width: 480px) {
-  .AudioPlayer__tool-bar {
-    padding-left: 75px !important;
-  }
   .AudioPlayer__fab {
     right: 43px;
   }

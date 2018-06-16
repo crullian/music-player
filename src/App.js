@@ -69,8 +69,42 @@ class App extends Component {
             search
           </IconButton>
         </header>
-        <AudioPlayer trackToPlay={selectedTrack} />
-        <SongsList songs={songs} handleSelectSong={this.handleSongSelection}/>
+        <AudioPlayer trackToPlay={selectedTrack} fetchingTrack={isFetchingTrack} hasSongs={!!songs} />
+        
+        {isLoading ?
+          <Loader />
+          :
+          <div>
+            {songs && searchTerm &&
+              <SongsList songs={songs} handleSelectSong={this.handleSongSelection}/>
+            }
+            {playlists && (!songs || !searchTerm) &&
+              <Playlists playlists={playlists} />
+            }
+            {(!songs || !searchTerm) &&
+              <div className="Auth_flex-container">
+                <div className="Auth-card">
+                  {!isSignedIn && <h2 className="center-text">Sign in to view your playlists</h2>}
+                  <div className="Auth-button-container">
+                    {isSignedIn ?
+                      <RaisedButton
+                        primary={true}
+                        label="Sign Out"
+                        onClick={this.handleSignOut}
+                      />
+                      :
+                      <RaisedButton
+                        primary={true}
+                        label="Sign In"
+                        onClick={this.handleSignIn}
+                      />
+                    }
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        }
       </div>
     );
   }

@@ -13,7 +13,7 @@ class SongsList extends Component {
   }
 
   handleClickSong(song) {
-    this.setState({itemSelected: song.id.videoId});
+    this.setState({itemSelected: song.trackId});
     this.props.handleSelectSong(song);
   }
 
@@ -30,7 +30,7 @@ class SongsList extends Component {
                 key={index}
                 song={song}
                 handleSelectSong={() => this.handleClickSong(song, index)}
-                selected={itemSelected === song.id.videoId}
+                selected={itemSelected === song.trackId}
               />
             )
           })

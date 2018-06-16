@@ -1,5 +1,6 @@
 .SongItem-container {
   display: flex;
+  justify-content: space-between;
   width: 400px;
   margin: 8px 8px 10px 8px;
   background: #f9f9f9;
@@ -12,31 +13,32 @@
 
 .SongItem-container:hover {
   cursor: pointer;
-  background: #d0d0d0;
+  // background: #d0d0d0;
   box-shadow: rgba(32, 33, 36, 0.28) 0 2px 15px;
 }
 
 .SongItem-container.selected {
-  background: #d0d0d0;
+  // background: #d0d0d0;
   box-shadow: rgba(32, 33, 36, 0.28) 0 10px 15px;
 }
 
 .SongItem-img {
-  width: 160px;
-  height: 160px;
+  width: 100px;
+  height: 100px;
 }
 
 .SongItem-info {
   display: flex;
   flex-flow: column;
   margin: 10px;
-  width: 175px;
+  width: 200px;
 }
 
 .SongItem-info h3 {
+  font-size: 14px;
   margin-top: 0;
   overflow: hidden;
-  white-space: nowrap;
+  white-space: pre-wrap;
   text-overflow: ellipsis;
 }
 
@@ -45,6 +47,7 @@
 }
 
 .SongItem-info-em {
+  font-size: 12px;
   margin-top: auto;
 }
 

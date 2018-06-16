@@ -1,19 +1,42 @@
-.App-logo {
-  height: 80px;
-}
-
 .App-header {
-  text-align: center;
-  background-color: #222;
+  display: flex;
+  justify-content: space-between;
+  background-color: #000;
   height: auto;
-  padding: 20px;
+  padding: 5px 20px;
   color: white;
 }
 
 .App-title {
-  font-size: 1.5em;
+  font-size: 1em;
 }
 
-.App-intro {
-  font-size: large;
+.Auth_flex-container {
+  display: flex;
+  flex-flow: wrap;
+  width: 100%;
+  margin: 5px auto;
+}
+
+.Auth-card {
+  display: flex;
+  flex-flow: column;
+  justify-content: space-around;
+  width: 384px;
+  margin: 8px 8px 10px;
+  background: #f9f9f9;
+  overflow: hidden;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px,
+              rgba(0, 0, 0, 0.12) 0px 1px 4px;
+  border-radius: 5px;
+}
+
+.Auth-button-container {
+  margin: 20px auto;
+}
+
+@media screen and (min-width: 400px) {
+  .Auth-card {
+    margin: 20px auto;
+  }
 }

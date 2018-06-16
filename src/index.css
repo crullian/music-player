@@ -4,3 +4,7 @@ body {
   font-family: 'Roboto', sans-serif;
   background-color: #e4e4e4;
 }
+
+.center-text {
+  text-align: center;
+}

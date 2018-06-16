@@ -1,0 +1,55 @@
+################## Flexible Environment (Node) #################################
+
+runtime: nodejs
+env: flex
+
+manual_scaling:
+  instances: 1
+resources:
+  cpu: 1
+  memory_gb: 0.5
+  disk_size_gb: 10
+
+################## Standard Environment (Python) ###############################
+
+# runtime: python27
+# api_version: 1
+# threadsafe: yes
+
+# libraries:
+# - name: webapp2
+#   version: latest
+
+# handlers:
+# - url: /(.*\.(js|css|scss|md|ico|png|gif|jpg|jpeg|svg|txt|map))
+#   static_files: build/\1
+#   upload: build/(.*\.(js|css|scss|md|ico|png|gif|jpg|jpeg|svg|txt|map))
+
+# - url: /getUrl
+#   script: getUrl.app
+#   secure: always
+
+# - url: /.*
+#   static_files: build/index.html
+#   upload: build/index.html
+
+# skip_files: |
+#   ^(.*/)?(
+#   (app\.yaml)|
+#   (index\.yaml)|
+#   (\..*)|
+#   (src)|
+#   (node_modules)|
+#   (.*\.pyc)|
+#   (.*\.bat)|
+#   (.*\.psd)|
+#   (Thumbs\.db)|
+#   (.*\.svn/.*)|
+#   (.*\.lnk)|
+#   (.*\.datastore)|
+#   (_darcs/.*)|
+#   (nbproject/.*)|
+#   (.*\.swp)|
+#   (.*\.log)|
+#   (tests)|
+#   )$

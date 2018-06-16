@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import Loader from '../../components/Loader/Loader';
 // import Timer from '../../components/Timer/Timer';
 import TimeRemaining from '../../components/TimeRemaining';
 
@@ -17,6 +18,7 @@ class AudioPlayer extends Component {
       currentTime: null,
       duration: null
     }
+    this.player = null;
     this.togglePlay = this.togglePlay.bind(this);
     this.handleTimeUptate = this.handleTimeUptate.bind(this);
   }
@@ -31,13 +33,15 @@ class AudioPlayer extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.trackToPlay !== prevProps.trackToPlay) {
-      const audio = document.getElementById('audioPlayer');
-      audio.addEventListener('loadedmetadata', () => {
-        this.setState({
-          duration: audio.duration,
-          currentTime: audio.duration * 1000
-        });
-      }, false);
+      // console.log('NEW trackToPlay', this.props.trackToPlay)
+      // console.log('NEW TRACK TO PLAY', this.player && this.player.getCurrentTime())
+      // const audio = document.getElementById('audioPlayer');
+      // audio.addEventListener('loadedmetadata', () => {
+      //   this.setState({
+      //     duration: this.player.getDuration(),
+      //     currentTime: this.player.getDuration() * 1000
+      //   });
+      // }, false);
     }
   }
 
@@ -68,10 +72,27 @@ class AudioPlayer extends Component {
     })
   }
 
+  // onReady = (event) => {
+  //   console.log('EVENT', event, 'TRACK TIME', event.target.getDuration());
+  //   this.player = event.target;
+  //   this.setState({
+  //     duration: event.target.getDuration(),
+  //     currentTime: event.target.getDuration() * 1000
+  //   });
+  // }
+
+  onPlay = () => {
+    this.setState({isPlaying: true});
+  }
+
+  onPause = () => {
+    this.setState({isPlaying: false})
+  }
+
   render() {
     const {isPlaying, currentTime} = this.state;
-    const {trackToPlay} = this.props;
-    
+    const {trackToPlay, fetchingTrack} = this.props;
+    // console.log('%ctrackToPlay', 'color:yellow', trackToPlay);
     // trackTime = (
     //   <Timer
     //     start={trackToPlay.trackTimeMillis}
@@ -83,40 +104,38 @@ class AudioPlayer extends Component {
     const trackTime = trackToPlay
     ? <TimeRemaining time={currentTime} />
     : <h3>--:--</h3>;
-    const audio = trackToPlay
-    ? (
-        <audio
-          id='audioPlayer'
-          ref={player => this.player = player}
-          src={trackToPlay.previewUrl}
-          onTimeUpdate={this.handleTimeUptate}
-        />
-      )
-    : null;
   
     return (
       <div className='AudioPlayer__container'>
         <AppBar
-          style={{padding: '0px'}}
+          style={{padding: '0px', background: '#000'}}
           titleStyle={{display: 'none'}}
           iconStyleLeft={{margin: '0px 0px -4px'}}
-          iconElementLeft={trackToPlay && 
-            <img src={trackToPlay.artworkUrl100} alt='track artwork' />
+          iconElementLeft={trackToPlay && !fetchingTrack &&
+            <video
+              id="audioPlayer"
+              ref={player => this.player = player}
+              src={trackToPlay.url}
+              className="youTube-player"
+            />
           }
-          showMenuIconButton={!!trackToPlay}
+          showMenuIconButton={!!trackToPlay && !fetchingTrack}
           className='AudioPlayer__tool-bar'
         >
+        {fetchingTrack ?
+          <Loader />
+          :
           <div className='AudioPlayer__info'>
             <h2>
-              {(trackToPlay && trackToPlay.trackName) || 'Select a track'}
+              {(trackToPlay && trackToPlay.title) || 'Select a track'}
             </h2>
             { trackTime }
-            { audio }
           </div>
+        }
         </AppBar>
         
-        <FloatingActionButton secondary={true} className='AudioPlayer__fab'>
-          <FontIcon className="material-icons" onClick={this.togglePlay}>
+        <FloatingActionButton className='AudioPlayer__fab'>
+          <FontIcon className="material-icons" style={{color: '#fff'}} onClick={this.togglePlay}>
             {isPlaying ? 'pause' : 'play_arrow'}
           </FontIcon>
         </FloatingActionButton>

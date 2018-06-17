@@ -11,6 +11,11 @@
   font-size: 1em;
 }
 
+.App-menu-title {
+  margin: 6px;
+  font-size: 1em;
+}
+
 .Auth_flex-container {
   display: flex;
   flex-flow: wrap;

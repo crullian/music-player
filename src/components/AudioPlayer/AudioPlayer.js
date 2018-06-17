@@ -25,13 +25,13 @@ class AudioPlayer extends Component {
   componentDidUpdate(prevProps) {
     if (this.props.trackToPlay !== prevProps.trackToPlay) {
       this.setState({isPlaying: false, currentTime: null})
-      // this.player.play();
       const audio = document.getElementById('audioPlayer');
       audio.addEventListener('loadedmetadata', () => {
         this.setState({
           duration: this.player.duration,
-          currentTime: this.player.duration * 1000
-        });
+          currentTime: this.player.duration * 1000,
+          isPlaying: this.props.autoPlay
+        }, () => this.props.autoPlay && this.player.play());
       }, false);
     }
   }
@@ -104,14 +104,21 @@ class AudioPlayer extends Component {
             <h2>
               { (trackToPlay && trackToPlay.title) || 'Select a track' }
             </h2>
-            { trackTime }
+            {trackToPlay && trackToPlay.ext === 'webm' &&
+              <p style={{color: 'yellow'}}>ios won't play this file format :(</p>
+            }
+            {trackToPlay && trackToPlay.ext === 'webm' ? null : trackTime }
           </div>
         }
         </AppBar>
         
-        {trackToPlay &&
+        {trackToPlay && trackToPlay.ext !== 'webm' &&
           <FloatingActionButton className='AudioPlayer__fab'>
-            <FontIcon className="material-icons" style={{color: '#fff'}} onClick={this.togglePlay}>
+            <FontIcon
+              className="material-icons"
+              style={{color: '#fff'}}
+              onClick={this.togglePlay}
+            >
               {(isPlaying && !fetchingTrack) ? 'pause' : 'play_arrow'}
             </FontIcon>
           </FloatingActionButton>

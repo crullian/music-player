@@ -18,6 +18,7 @@ app.post('/getUrl', (req, res) => {
   youtubedl.getInfo(req.body.url, null, (err, info) => {
     if (err) {
       console.log('ERROR:', err);
+      res.send({error: err});
     } else {
       res.send({
         id: info.id,

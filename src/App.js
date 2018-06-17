@@ -6,9 +6,12 @@ import Loader from './components/Loader/Loader';
 import Playlists from './components/Playlists/Playlists';
 import SongsList from './components/SongsList/SongsList';
 
-import TextField from 'material-ui/TextField';
+import Checkbox from 'material-ui/Checkbox';
+import Drawer from 'material-ui/Drawer';
 import IconButton from 'material-ui/IconButton';
+import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
 
 import './App.css';
 
@@ -22,7 +25,9 @@ class App extends Component {
       playlists: null,
       isSignedIn: true,
       isFetchingTrack: false,
-      isLoading: true
+      isLoading: true,
+      isDrawerOpen: false,
+      inlineChecked: false
     }
     this.handleSongSelection = this.handleSongSelection.bind(this);
     this.handleSearchInput = this.handleSearchInput.bind(this);
@@ -126,15 +131,38 @@ class App extends Component {
     }).catch(err => console.error('ERROR!', err));
   }
 
+  handleClickMenu = () => {
+    this.openDrawer();
+  }
+
+  openDrawer = () => {
+    this.setState({isDrawerOpen: true});
+  }
+
+  closeDrawer = () => {
+    this.setState({isDrawerOpen: false});
+  }
+
+  updateCheck = () => {
+    this.setState({
+      inlineChecked: !this.state.inlineChecked
+    });
+  }
+
   render() {
     const { selectedTrack, songs, isSignedIn, playlists, searchTerm,
-      isFetchingTrack, isLoading } = this.state;
-    // console.log('NEW TRACK EVERYBODY', selectedTrack)
+      isFetchingTrack, isLoading, inlineChecked } = this.state;
+    console.log('Checked', inlineChecked);
     // console.log('PLAYLISTS', playlists);
     return (
       <div className="App">
         <header className="App-header">
-          <h2 className="App-title">YTPlayer</h2>
+          <div style={{display: 'flex'}}>
+            <IconButton iconClassName="material-icons" onClick={this.handleClickMenu}>
+              menu
+            </IconButton>
+            <h2 className="App-title">YTPlayer</h2>
+          </div>
           <div className="App-searchfield-container">
             <TextField
               id="App-textfield"
@@ -143,14 +171,19 @@ class App extends Component {
               value={searchTerm}
               hintText='Search an artist'
               hintStyle={{color: '#fff'}}
-              style={{width: '180px'}}
+              style={{width: '150px', height: '40px'}}
             />
             <IconButton iconClassName="material-icons" onClick={this.handleFetchSongs}>
               search
             </IconButton>
           </div>
         </header>
-        <AudioPlayer trackToPlay={selectedTrack} fetchingTrack={isFetchingTrack} hasSongs={!!songs} />
+        <AudioPlayer
+          trackToPlay={selectedTrack}
+          fetchingTrack={isFetchingTrack}
+          hasSongs={!!songs}
+          playsInline={inlineChecked}
+        />
         
         {isLoading ?
           <Loader />
@@ -186,6 +219,23 @@ class App extends Component {
             }
           </div>
         }
+
+        <Drawer
+          containerStyle={{background: '#000'}}
+          docked={false}
+          width={200}
+          open={this.state.isDrawerOpen}
+          onRequestChange={this.closeDrawer}
+        >
+          <MenuItem>YTPlayer</MenuItem>
+          <MenuItem>
+            <Checkbox
+              label="Play inline"
+              labelPosition="left"
+              onCheck={this.updateCheck}
+            />
+          </MenuItem>
+        </Drawer>
       </div>
     );
   }

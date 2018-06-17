@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import Loader from '../../components/Loader/Loader';
-import TimeRemaining from '../../components/TimeRemaining';
+import TimeRemaining from '../../components/Timer/TimeRemaining';
 
 import AppBar from 'material-ui/AppBar';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
@@ -24,8 +24,8 @@ class AudioPlayer extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.trackToPlay !== prevProps.trackToPlay) {
-      this.setState({isPlaying: true, currentTime: null})
-      this.player.play();
+      this.setState({isPlaying: false, currentTime: null})
+      // this.player.play();
       const audio = document.getElementById('audioPlayer');
       audio.addEventListener('loadedmetadata', () => {
         this.setState({
@@ -70,7 +70,7 @@ class AudioPlayer extends Component {
 
   render() {
     const {isPlaying, currentTime} = this.state;
-    const {trackToPlay, fetchingTrack, hasSongs} = this.props;
+    const {trackToPlay, fetchingTrack, hasSongs, playsInline} = this.props;
 
     const trackTime = trackToPlay
     ? <TimeRemaining time={currentTime} />
@@ -84,6 +84,7 @@ class AudioPlayer extends Component {
           iconStyleLeft={{margin: '0px 0px -4px'}}
           iconElementLeft={trackToPlay && !fetchingTrack ?
             <video
+              playsInline={playsInline}
               id="audioPlayer"
               ref={player => this.player = player}
               src={trackToPlay.url}

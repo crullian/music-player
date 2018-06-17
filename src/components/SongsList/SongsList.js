@@ -13,6 +13,7 @@ class SongsList extends Component {
   }
 
   handleClickSong(song) {
+    console.log('Selected Song', song);
     this.setState({itemSelected: song.id.videoId});
     this.props.handleSelectSong(song);
   }

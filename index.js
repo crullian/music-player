@@ -22,8 +22,10 @@ app.post('/getUrl', (req, res) => {
     } else {
       res.send({
         id: info.id,
-        title: info.title,
         url: info.url,
+        ext: info.ext,
+        title: info.title,
+        duration: info.duration,
         thumbnail: info.thumbnail,
         description: info.description,
         filename: info._filename,

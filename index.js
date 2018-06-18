@@ -15,7 +15,7 @@ app.get('/api', (req, res) => {
 });
 
 app.post('/getUrl', (req, res) => {
-  youtubedl.getInfo(req.body.url, null, (err, info) => {
+  youtubedl.getInfo(req.body.url, ['--format=mp4'], (err, info) => {
     if (err) {
       console.log('ERROR:', err);
       res.send({error: err});

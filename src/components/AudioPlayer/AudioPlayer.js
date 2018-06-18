@@ -10,17 +10,14 @@ import FontIcon from 'material-ui/FontIcon';
 import './AudioPlayer.css';
 
 class AudioPlayer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isPlaying: false,
-      currentTime: null,
-      duration: null
-    }
-    this.player = null;
-    this.togglePlay = this.togglePlay.bind(this);
-    this.handleTimeUpdate = this.handleTimeUpdate.bind(this);
+
+  state = {
+    isPlaying: false,
+    currentTime: null,
+    duration: null
   }
+
+  player = null;
 
   componentDidUpdate(prevProps) {
     if (this.props.trackToPlay !== prevProps.trackToPlay) {
@@ -41,7 +38,7 @@ class AudioPlayer extends Component {
     audio.removeEventListener('loadedmetadata', () => {}, false);
   }
 
-  handleTimeUpdate() {
+  handleTimeUpdate = () => {
     if (this.player.ended) {
       this.setState({
         currentTime: this.state.duration * 1000,
@@ -54,7 +51,7 @@ class AudioPlayer extends Component {
     }
   }
 
-  togglePlay() {
+  togglePlay = () => {
     if (!this.props.trackToPlay || this.props.fetchingTrack) {
       return;
     }
@@ -65,6 +62,18 @@ class AudioPlayer extends Component {
     }
     this.setState({
       isPlaying: !this.state.isPlaying
+    })
+  }
+
+  updateOnPause = () => {
+    this.setState({
+      isPlaying: false
+    })
+  }
+
+  updateOnPlay = () => {
+    this.setState({
+      isPlaying: true
     })
   }
 
@@ -90,6 +99,8 @@ class AudioPlayer extends Component {
               src={trackToPlay.url}
               className="player"
               onTimeUpdate={this.handleTimeUpdate}
+              onPause={this.updateOnPause}
+              onPlay={this.updateOnPlay}
             />
             : null
           }

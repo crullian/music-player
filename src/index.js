@@ -12,7 +12,7 @@ import './index.css';
 
 const muiTheme = getMuiTheme({
   palette: {
-    primary1Color: '#fe2d14',
+    primary1Color: '#651fff', // #fe2d14 #651fff #5014fe #7b1fa2
     textColor: '#fff'
   }
 });

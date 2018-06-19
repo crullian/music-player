@@ -8,3 +8,17 @@ body {
 .center-text {
   text-align: center;
 }
+
+
+/****************** FADE-UP ANIMATION ***********/
+
+@keyframes fade-up {
+  0% {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}

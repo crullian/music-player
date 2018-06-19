@@ -24,7 +24,10 @@ class SongsList extends Component {
     return (
       <div className='SongsList__flex-container'>
         {
-          songs && songs.map((song, index) => {
+          songs && songs.filter(song => {
+            // filter out playlists for now
+            return song.id.kind === 'youtube#video';
+          }).map((song, index) => {
             return (
               <SongItem
                 key={index}

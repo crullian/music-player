@@ -15,14 +15,17 @@ app.get('/api', (req, res) => {
 });
 
 app.post('/getUrl', (req, res) => {
-  youtubedl.getInfo(req.body.url, null, (err, info) => {
+  youtubedl.getInfo(req.body.url, ['--format=mp4'], (err, info) => {
     if (err) {
       console.log('ERROR:', err);
+      res.send({error: err});
     } else {
       res.send({
         id: info.id,
-        title: info.title,
         url: info.url,
+        ext: info.ext,
+        title: info.title,
+        duration: info.duration,
         thumbnail: info.thumbnail,
         description: info.description,
         filename: info._filename,

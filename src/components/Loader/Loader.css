@@ -7,8 +7,8 @@
 
 .spinner circle {
   fill: transparent;
-  stroke: #fe2d14;
-  // stroke: #5014fe;
+  /* stroke: #fe2d14; #651fff #5014fe #7b1fa2 */
+  stroke: #651fff;
   stroke-width: 4;
   stroke-linecap: round;
   stroke-dasharray: 125.6;

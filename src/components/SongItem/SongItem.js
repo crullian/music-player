@@ -26,7 +26,6 @@ class SongItem extends Component {
           />
           <div className='SongItem-info'>
             <h3>{song.snippet.title}</h3>
-            {/*<p>{song.artistName}</p>*/}
             {/*<p>{trackTime}</p>*/}
             {selected && 
               <div className='SongItem-info-em'>

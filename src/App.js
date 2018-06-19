@@ -6,27 +6,29 @@ import Loader from './components/Loader/Loader';
 import Playlists from './components/Playlists/Playlists';
 import SongsList from './components/SongsList/SongsList';
 
-import TextField from 'material-ui/TextField';
+import Checkbox from 'material-ui/Checkbox';
+import Divider from 'material-ui/Divider';
+import Drawer from 'material-ui/Drawer';
 import IconButton from 'material-ui/IconButton';
+import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
 
 import './App.css';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedTrack: null,
-      searchTerm: '',
-      songs: null,
-      playlists: null,
-      isSignedIn: true,
-      isFetchingTrack: false,
-      isLoading: true
-    }
-    this.handleSongSelection = this.handleSongSelection.bind(this);
-    this.handleSearchInput = this.handleSearchInput.bind(this);
-    this.handleFetchSongs = this.handleFetchSongs.bind(this);
+
+  state = {
+    selectedTrack: null,
+    searchTerm: '',
+    songs: null,
+    playlists: null,
+    isSignedIn: true,
+    isLoadingTrack: false,
+    isLoadingList: true,
+    isDrawerOpen: false,
+    inlineChecked: JSON.parse(localStorage.getItem('inline')),
+    autoplayChecked: JSON.parse(localStorage.getItem('autoplay'))
   }
 
   componentDidMount() {
@@ -39,18 +41,20 @@ class App extends Component {
         this.handleFetchPlaylists();
       } else {
         this.setState({
-          isLoading: false,
+          isLoadingList: false,
           isSignedIn: false
         });
       }
     });
   }
 
-  handleSongSelection(song) {
-    this.setState({isFetchingTrack: true});
+  handleSongSelection = (song) => {
+    this.setState({isLoadingTrack: true});
     return fetch('/getUrl', {
       method: 'POST',
-      body: JSON.stringify({ url:`https://www.youtube.com/watch?v=${song.id.videoId}`}),
+      body: JSON.stringify({ 
+        url:`https://www.youtube.com/watch?v=${song.id.videoId}`
+      }),
       headers: {
         'content-type': 'application/json'
       }
@@ -62,12 +66,12 @@ class App extends Component {
     }).then(json => {
       this.setState({
         selectedTrack: json,
-        isFetchingTrack: false
+        isLoadingTrack: false
       })
     }).catch(err => console.error('ERROR! :(', err))
   }
 
-  handleSearchInput(e) {
+  handleSearchInput = (e) => {
     this.setState({
       searchTerm: e.target.value
     });
@@ -79,7 +83,8 @@ class App extends Component {
     }
   } 
 
-  handleFetchSongs() {
+  handleFetchSongs = () => {
+    this.setState({isLoadingList: true});
     const searchTerm = this.state.searchTerm.toLowerCase();
     const request = window.gapi.client.youtube.search.list({
       q: searchTerm,
@@ -88,7 +93,8 @@ class App extends Component {
     });
     request.execute((response) => {
       this.setState({
-        songs: response.items
+        songs: response.items,
+        isLoadingList: false
       })
     });
   }
@@ -106,7 +112,7 @@ class App extends Component {
     request.execute((response) => {
       this.setState({
         playlists: response.items,
-        isLoading: false
+        isLoadingList: false
       })
     });
   }
@@ -126,15 +132,48 @@ class App extends Component {
     }).catch(err => console.error('ERROR!', err));
   }
 
+  handleClickMenu = () => {
+    this.openDrawer();
+  }
+
+  openDrawer = () => {
+    this.setState({isDrawerOpen: true});
+  }
+
+  closeDrawer = () => {
+    this.setState({isDrawerOpen: false});
+  }
+
+  handleCheckInline = () => {
+    this.setState({
+      inlineChecked: !this.state.inlineChecked
+    });
+    localStorage.setItem('inline', !this.state.inlineChecked);
+  }
+
+  handleCheckAutoPlay = () => {
+    this.setState({
+      autoplayChecked: !this.state.autoplayChecked
+    });
+    localStorage.setItem('autoplay', !this.state.autoplayChecked);
+  }
+
   render() {
     const { selectedTrack, songs, isSignedIn, playlists, searchTerm,
-      isFetchingTrack, isLoading } = this.state;
-    // console.log('NEW TRACK EVERYBODY', selectedTrack)
-    // console.log('PLAYLISTS', playlists);
+      isLoadingTrack, isLoadingList, inlineChecked, autoplayChecked } = this.state;
+
     return (
       <div className="App">
         <header className="App-header">
-          <h2 className="App-title">YTPlayer</h2>
+          <div style={{display: 'flex'}}>
+            <IconButton
+              iconClassName="material-icons"
+              onClick={this.handleClickMenu}
+            >
+              menu
+            </IconButton>
+            <h2 className="App-title">YTPlayer</h2>
+          </div>
           <div className="App-searchfield-container">
             <TextField
               id="App-textfield"
@@ -142,22 +181,34 @@ class App extends Component {
               onKeyPress={this.handleKeyPress}
               value={searchTerm}
               hintText='Search an artist'
-              hintStyle={{color: '#fff'}}
-              style={{width: '180px'}}
+              hintStyle={{color: '#fff', bottom: '8px'}}
+              style={{width: '150px', height: '40px'}}
             />
-            <IconButton iconClassName="material-icons" onClick={this.handleFetchSongs}>
+            <IconButton
+              iconClassName="material-icons"
+              onClick={this.handleFetchSongs}
+            >
               search
             </IconButton>
           </div>
         </header>
-        <AudioPlayer trackToPlay={selectedTrack} fetchingTrack={isFetchingTrack} hasSongs={!!songs} />
+        <AudioPlayer
+          trackToPlay={selectedTrack}
+          fetchingTrack={isLoadingTrack}
+          hasSongs={!!songs}
+          playsInline={inlineChecked}
+          autoPlay={autoplayChecked}
+        />
         
-        {isLoading ?
+        {isLoadingList ?
           <Loader />
           :
           <div>
             {songs && searchTerm &&
-              <SongsList songs={songs} handleSelectSong={this.handleSongSelection}/>
+              <SongsList
+                songs={songs}
+                handleSelectSong={this.handleSongSelection}
+              />
             }
             {playlists && (!songs || !searchTerm) &&
               <Playlists playlists={playlists} />
@@ -165,7 +216,11 @@ class App extends Component {
             {(!songs || !searchTerm) &&
               <div className="Auth_flex-container">
                 <div className="Auth-card">
-                  {!isSignedIn && <h2 className="center-text">Sign in to view your playlists</h2>}
+                  {!isSignedIn &&
+                    <h2 className="center-text">
+                      Sign in to view your playlists
+                    </h2>
+                  }
                   <div className="Auth-button-container">
                     {isSignedIn ?
                       <RaisedButton
@@ -186,6 +241,37 @@ class App extends Component {
             }
           </div>
         }
+
+        <Drawer
+          containerStyle={{background: '#000'}}
+          docked={false}
+          width={200}
+          open={this.state.isDrawerOpen}
+          onRequestChange={this.closeDrawer}
+        >
+          <MenuItem>
+            <h2 className="App-menu-title">YTPlayer</h2>
+          </MenuItem>
+          <Divider />
+          <MenuItem>
+            <Checkbox
+              style={{padding: '12px 0'}}
+              label="Play inline"
+              labelPosition="left"
+              checked={inlineChecked}
+              onCheck={this.handleCheckInline}
+            />
+          </MenuItem>
+          <MenuItem>
+            <Checkbox
+              style={{padding: '12px 0'}}
+              label="Auto play"
+              labelPosition="left"
+              checked={autoplayChecked}
+              onCheck={this.handleCheckAutoPlay}
+            />
+          </MenuItem>
+        </Drawer>
       </div>
     );
   }

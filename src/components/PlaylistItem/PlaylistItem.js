@@ -7,6 +7,13 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 import './PlaylistItem.css'
 
+const menuItems = [
+  "Add to a playlist",
+  "Share",
+  "Settings",
+  "Help"
+];
+
 class PlaylistItem extends Component {
   render() {
     // console.log('PLAYLIST', this.props.playlist);
@@ -15,7 +22,7 @@ class PlaylistItem extends Component {
       <div
         className={`PlaylistItem-container${selected ? ' selected' : ''}`}
       >
-        <div style={{display: 'flex'}}>
+        <div style={{display: 'flex'}} onClick={() => this.props.selectPlaylist(playlist)}>
           <img
             src={playlist.snippet.thumbnails.default.url} 
             alt='track artwork' 
@@ -38,10 +45,9 @@ class PlaylistItem extends Component {
           targetOrigin={{horizontal: 'right', vertical: 'bottom'}}
           useLayerForClickAway={true}
         >
-          <MenuItem style={{color: '#000'}} primaryText="Add to playlist" />
-          <MenuItem style={{color: '#000'}} primaryText="Share" />
-          <MenuItem style={{color: '#000'}} primaryText="Settings" />
-          <MenuItem style={{color: '#000'}} primaryText="Help" />
+          {menuItems.map((item, i) => (
+            <MenuItem key={`${item}-${i}`} style={{color: '#000'}} primaryText={item} />
+          ))}
         </IconMenu>
       </div>
     );

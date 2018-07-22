@@ -117,6 +117,28 @@ class App extends Component {
     });
   }
 
+  handleFetchPlaylistById = (playlistId) => {
+    console.log('handleFetchPlaylistById', playlistId);
+    this.setState({isLoadingList: true});
+    const request = window.gapi.client.request({
+      method: 'GET',
+      path: '/youtube/v3/playlistItems',
+      params: {
+        'maxResults': '25',
+        'part': 'snippet,contentDetails',
+        'playlistId': playlistId
+      }
+    });
+    request.execute((response) => {
+      console.log('response', response.items)
+      this.setState({
+        playlists: null,
+        songs: response.items,
+        isLoadingList: false
+      })
+    });
+  }
+
   handleSignIn = () => {
     const googleApi = new GoogleApi();
     googleApi.signIn().then(res => {
@@ -159,6 +181,7 @@ class App extends Component {
   }
 
   render() {
+    console.log('THIS STATE', this.state);
     const { selectedTrack, songs, isSignedIn, playlists, searchTerm,
       isLoadingTrack, isLoadingList, inlineChecked, autoplayChecked } = this.state;
 
@@ -204,14 +227,17 @@ class App extends Component {
           <Loader />
           :
           <div>
-            {songs && searchTerm &&
+            {songs &&
               <SongsList
                 songs={songs}
                 handleSelectSong={this.handleSongSelection}
               />
             }
             {playlists && (!songs || !searchTerm) &&
-              <Playlists playlists={playlists} />
+              <Playlists
+                playlists={playlists}
+                passPlaylistIdToParent={this.handleFetchPlaylistById}
+              />
             }
             {(!songs || !searchTerm) &&
               <div className="Auth_flex-container">

@@ -8,6 +8,13 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 import './SongItem.css';
 
+const menuItems = [
+  "Add to a playlist",
+  "Share",
+  "Settings",
+  "Help"
+];
+
 class SongItem extends Component {
 
   render() {
@@ -40,10 +47,9 @@ class SongItem extends Component {
           targetOrigin={{horizontal: 'right', vertical: 'bottom'}}
           useLayerForClickAway={true}
         >
-          <MenuItem style={{color: '#000'}} primaryText="Add to playlist" />
-          <MenuItem style={{color: '#000'}} primaryText="Share" />
-          <MenuItem style={{color: '#000'}} primaryText="Settings" />
-          <MenuItem style={{color: '#000'}} primaryText="Help" />
+          {menuItems.map((item, i) => (
+            <MenuItem key={`${item}-${i}`} style={{color: '#000'}} primaryText={item} />
+          ))}
         </IconMenu>
       </div>
     )

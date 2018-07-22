@@ -4,15 +4,13 @@ import PlaylistItem from '../../components/PlaylistItem/PlaylistItem';
 import './Playlists.css';
 
 class Playlists extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      itemSelected: null
-    }
-    // this.handleClickSong = this.handleClickSong.bind(this);
+  state = {
+    itemSelected: null
   }
 
-  handleClickSong(song) {
+  handleSelectPlaylist = (playlist) => {
+    console.log('playlist', playlist);
+    this.props.passPlaylistIdToParent(playlist.id);
     // this.setState({itemSelected: song.id.videoId});
     // // this.props.handleSelectSong(song);
     // fetch('/getUrl', {
@@ -46,6 +44,7 @@ class Playlists extends Component {
               <PlaylistItem
                 key={playlist.id}
                 playlist={playlist}
+                selectPlaylist={this.handleSelectPlaylist}
               />
             )
           })

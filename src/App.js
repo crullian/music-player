@@ -59,10 +59,11 @@ class App extends Component {
         'content-type': 'application/json'
       }
     }).then(res => {
+      console.log('RESP', res)
       if (res.ok) {
         return res.json();
       }
-      throw Error('BAD');
+      throw Error('Response was not OK', res);
     }).then(json => {
       this.setState({
         selectedTrack: json,

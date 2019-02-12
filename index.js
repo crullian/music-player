@@ -1,7 +1,7 @@
 const express = require('express')
 const path = require('path')
 const bodyParser = require('body-parser');
-const youtubedl = require('youtube-dl');
+const youtubedl = require('ytdl-core');
 
 const app = express();
 
@@ -16,20 +16,22 @@ app.get('/api', (req, res) => {
 
 app.post('/getUrl', (req, res) => {
   youtubedl.getInfo(req.body.url, ['--format=mp4'], (err, info) => {
+    console.log('INFO', info)
     if (err) {
       console.log('ERROR:', err);
       res.send({error: err});
     } else {
+      // res.send({info: info})
       res.send({
-        id: info.id,
-        url: info.url,
-        ext: info.ext,
+        id: info.video_id,
+        url: info.formats[0].url,
+        ext: info.formats[0].container,
         title: info.title,
-        duration: info.duration,
-        thumbnail: info.thumbnail,
-        description: info.description,
-        filename: info._filename,
-        format_id: info.format_id
+        duration: info.length_seconds,
+        thumbnail: info.thumbnail_url,
+      //   description: info.description,
+      //   filename: info._filename,
+      //   format_id: info.format_id
       });
     }
   });

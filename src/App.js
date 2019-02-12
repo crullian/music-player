@@ -59,17 +59,26 @@ class App extends Component {
         'content-type': 'application/json'
       }
     }).then(res => {
-      console.log('RESP', res)
       if (res.ok) {
         return res.json();
       }
       throw Error('Response was not OK', res);
     }).then(json => {
+      if (json.error) {
+        console.error('error was:', json.error)
+        throw Error('JSON Errored???', json.error)
+      }
+      // console.log('JSON INFO', json.info)
       this.setState({
         selectedTrack: json,
         isLoadingTrack: false
       })
-    }).catch(err => console.error('ERROR! :(', err))
+    }).catch(err => {
+      this.setState({
+        isLoadingTrack: false
+      });
+      console.error('ERROR! :(', err)
+    })
   }
 
   handleSearchInput = (e) => {
@@ -162,6 +171,7 @@ class App extends Component {
   render() {
     const { selectedTrack, songs, isSignedIn, playlists, searchTerm,
       isLoadingTrack, isLoadingList, inlineChecked, autoplayChecked } = this.state;
+    // console.log('STATE', selectedTrack)
 
     return (
       <div className="App">

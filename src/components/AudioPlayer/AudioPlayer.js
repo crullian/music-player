@@ -55,7 +55,7 @@ class AudioPlayer extends Component {
     if (!this.props.trackToPlay || this.props.fetchingTrack) {
       return;
     }
-    if (this.state.isPlaying) {
+    if (this.player && this.state.isPlaying) {
       this.player.pause()
     } else {
       this.player.play();

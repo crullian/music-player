@@ -11,8 +11,7 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-scripts": "1.1.1",
-    "youtube-dl": "^1.12.2",
-    "ytdl-core": "^0.29.1"
+    "ytdl-core": "^2.0.1"
   },
   "proxy": "http://localhost:8080/",
   "scripts": {

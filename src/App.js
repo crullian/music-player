@@ -53,7 +53,7 @@ class App extends Component {
     return fetch('/getUrl', {
       method: 'POST',
       body: JSON.stringify({ 
-        url:`https://www.youtube.com/watch?v=${song.id.videoId}`
+        url: song.id.videoId
       }),
       headers: {
         'content-type': 'application/json'

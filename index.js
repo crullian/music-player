@@ -2,6 +2,7 @@ const express = require('express')
 const path = require('path')
 const bodyParser = require('body-parser');
 const youtubedl = require('ytdl-core');
+const fs = require('fs');
 
 const app = express();
 
@@ -15,6 +16,8 @@ app.get('/api', (req, res) => {
 });
 
 app.post('/getUrl', (req, res) => {
+  const url = req.body.url;
+  console.log('URL\n', url);
   youtubedl.getInfo(req.body.url, ['--format=mp4'], (err, info) => {
     console.log('INFO', info)
     if (err) {
@@ -35,6 +38,21 @@ app.post('/getUrl', (req, res) => {
       });
     }
   });
+  // let video = youtubedl(url,
+  //   // Optional arguments passed to youtube-dl.
+  //   ['--format=mp4'],
+  //   // Additional options can be given for calling `child_process.execFile()`.
+  //   { cwd: __dirname }
+  // );
+
+  // // Will be called when the download starts.
+  // video.on('info', function(info) {
+  //   console.log('Download started');
+  //   console.log('filename: ' + info._filename);
+  //   console.log('size: ' + info.size);
+  // });
+
+  // video.pipe(fs.createWriteStream('myvideo.mp4'));
 })
 
 app.get('*', (req, res) => {
